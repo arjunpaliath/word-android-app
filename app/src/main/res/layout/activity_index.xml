@@ -9,7 +9,8 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:textColor="@color/white"
-        android:text="Test"
+        android:text="Choose wisely"
+        android:textSize="32sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
         android:layout_height="wrap_content" />
@@ -20,9 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Play Now"
-        android:textSize="52sp"
+        android:textSize="32sp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/titleText"/>
 
 </RelativeLayout>
