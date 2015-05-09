@@ -20,7 +20,7 @@ public class LaunchActivity extends Activity {
             public void run() {
                 LaunchActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        startActivity(new Intent(LaunchActivity.this, IndexActivity.class));
+                        startActivity(new Intent(LaunchActivity.this, GameActivity.class));
                     }
                 });
             }
