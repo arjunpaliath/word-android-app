@@ -27,14 +27,14 @@ public class QuestionParser {
                 JSONObject jObject =  new JSONObject(entry.getValue().toString());
 
                 newQuestion.qWord = (String)jObject.getString("qWord");
-                newQuestion.answer = (String)jObject.getString("answer");
+                newQuestion.answer = (String)jObject.getString("answer").replace("_"," ");
                 JSONArray jArray = (JSONArray)jObject.get("choices");
 
                 newQuestion.choices = new ArrayList<String>();
 
                 if (jArray != null) {
                     for (int i=0;i<jArray.length();i++){
-                        newQuestion.choices.add(jArray.get(i).toString());
+                        newQuestion.choices.add(jArray.get(i).toString().replace("_"," "));
                     }
                 }
 

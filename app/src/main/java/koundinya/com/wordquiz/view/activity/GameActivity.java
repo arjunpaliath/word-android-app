@@ -1,6 +1,7 @@
 package koundinya.com.wordquiz.view.activity;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -71,9 +72,13 @@ public class GameActivity extends Activity implements View.OnClickListener{
         option_4_text = (TextView) findViewById(R.id.option_4_text);
 
         option_1 = (RelativeLayout) findViewById(R.id.option_1);
+        option_1.setTag(1);
         option_2 = (RelativeLayout) findViewById(R.id.option_2);
+        option_2.setTag(2);
         option_3 = (RelativeLayout) findViewById(R.id.option_3);
+        option_3.setTag(3);
         option_4 = (RelativeLayout) findViewById(R.id.option_4);
+        option_4.setTag(4);
         result_view = (RelativeLayout) findViewById(R.id.result_view);
         result_text = (TextView) findViewById(R.id.answer_status);
 
@@ -135,26 +140,22 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
                 case 0:
                     option_1_text.setText(viewQuestion.choices.get(s));
-                    option_1.setTag(s);
                     option_1.setBackgroundColor(colorArray[s]);
                     option_1.setOnClickListener((android.view.View.OnClickListener) this);
                     break;
                 case 1:
                     option_2_text.setText(viewQuestion.choices.get(s));
-                    option_2.setTag(s);
                     option_2.setBackgroundColor(colorArray[s]);
                     option_2.setOnClickListener((android.view.View.OnClickListener) this);
                     break;
                 case 2:
                     option_3_text.setText(viewQuestion.choices.get(s));
                     option_3.setBackgroundColor(colorArray[s]);
-                    option_3.setTag(s);
                     option_3.setOnClickListener((android.view.View.OnClickListener) this);
                     break;
                 case 3:
                     option_4_text.setText(viewQuestion.choices.get(s));
                     option_4.setBackgroundColor(colorArray[s]);
-                    option_4.setTag(s);
                     option_4.setOnClickListener((android.view.View.OnClickListener) this);
                     break;
             }
@@ -202,17 +203,22 @@ public class GameActivity extends Activity implements View.OnClickListener{
         TextView selected_resp = null;
 
         switch((int)v.getTag()){
-            case 0:
-                selected_resp = (TextView)v.findViewById(R.id.option_1_text);
             case 1:
                 selected_resp = (TextView)v.findViewById(R.id.option_1_text);
+                break;
             case 2:
-                selected_resp = (TextView)v.findViewById(R.id.option_1_text);
+                selected_resp = (TextView)v.findViewById(R.id.option_2_text);
+                break;
             case 3:
-                selected_resp = (TextView)v.findViewById(R.id.option_1_text);
+                selected_resp = (TextView)v.findViewById(R.id.option_3_text);
+                break;
+            case 4:
+                selected_resp = (TextView)v.findViewById(R.id.option_4_text);
+                break;
 
         }
-        correctAnswer = selected_resp.getText() == currentQ.qWord ? true : false;
+
+        correctAnswer = selected_resp.getText().equals(currentQ.answer) ? true : false;
 
         TextView status;
         status = (TextView) result_view.findViewById(R.id.answer_status);
@@ -223,7 +229,10 @@ public class GameActivity extends Activity implements View.OnClickListener{
         }else {
             status.setText("Wrong.");
         }
-        result_view.setBackgroundColor(colorArray[(int)v.getTag()]);
+
+        ColorDrawable viewColor = (ColorDrawable) v.getBackground();
+
+        result_view.setBackgroundColor(viewColor.getColor());
 
 
         new Timer().schedule(new TimerTask(){
