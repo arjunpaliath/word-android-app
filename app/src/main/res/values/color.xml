@@ -17,6 +17,11 @@
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
     <color name="srihari_black">#333333</color>
+    <color name="srihari_orange">#EDA65F</color>
+    <color name="srihari_green">#00BE86</color>
+    <color name="srihari_blue">#4A9082</color>
+    <color name="srihari_red">#C24E4E</color>
+
 
 </resources>
 

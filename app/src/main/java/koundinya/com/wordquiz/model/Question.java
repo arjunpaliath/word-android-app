@@ -1,6 +1,6 @@
 package koundinya.com.wordquiz.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by girishk on 09/05/15.
@@ -8,6 +8,6 @@ import java.util.List;
 public class Question {
 
     public String qWord;
-    public List<String> choices;
+    public ArrayList<String> choices;
     public String answer;
 }
