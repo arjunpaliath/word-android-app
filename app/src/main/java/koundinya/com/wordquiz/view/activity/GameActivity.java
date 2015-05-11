@@ -14,14 +14,14 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import koundinya.com.wordquiz.R;
+import koundinya.com.wordquiz.Util.UtilMethods;
+import koundinya.com.wordquiz.model.CurrentUser;
 import koundinya.com.wordquiz.model.Question;
 import koundinya.com.wordquiz.parser.QuestionParser;
 
@@ -35,6 +35,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
     TextView option_2_text;
     TextView option_3_text;
     TextView option_4_text;
+    TextView score_card;
 
     RelativeLayout option_1;
     RelativeLayout option_2;
@@ -81,6 +82,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
         option_4.setTag(4);
         result_view = (RelativeLayout) findViewById(R.id.result_view);
         result_text = (TextView) findViewById(R.id.answer_status);
+        score_card = (TextView) findViewById(R.id.score_card);
 
         colorArray = new int[] {getResources().getColor(R.color.srihari_blue),
                 getResources().getColor(R.color.srihari_green),
@@ -117,7 +119,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
     public void updateViews(ArrayList<Question> questions){
 
-        int initialOption = randInt(0,questionValues.size());
+        int initialOption = UtilMethods.generateRandomInt(0,questionValues.size()-1);
         currentQuestion = initialOption;
         generateQuestion(initialOption);
 
@@ -129,9 +131,9 @@ public class GameActivity extends Activity implements View.OnClickListener{
         Question viewQuestion = questionValues.get(index);
         currentQ = viewQuestion;
         questionText.setText(viewQuestion.qWord);
+        score_card.setText(CurrentUser.getInstance(this).getScore());
 
-
-        Set<Integer> numbers = randIntSet(0, 3);
+        Set<Integer> numbers = UtilMethods.generateRandomSet(0, 3);
 
         int count = 0;
         for (Integer s : numbers) {
@@ -163,29 +165,6 @@ public class GameActivity extends Activity implements View.OnClickListener{
         }
         question_layer.setVisibility(View.VISIBLE);
 
-    }
-
-
-    public int randInt(int min, int max) {
-
-        Random rand = new Random();
-
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
-
-    }
-    public  Set<Integer> randIntSet(int min, int max) {
-
-
-        Random rand = new Random();
-        Set<Integer> generated = new LinkedHashSet<Integer>();
-        while (generated.size() < 4)
-        {
-            int randomNum = rand.nextInt((max - min) + 1) + min;
-            generated.add(randomNum);
-        }
-        return generated;
     }
 
 
@@ -225,8 +204,11 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
         if(correctAnswer) {
 
+            CurrentUser.getInstance(this).correctAnswer(true);
             status.setText("Correct.");
         }else {
+
+            CurrentUser.getInstance(this).correctAnswer(false);
             status.setText("Wrong.");
         }
 
@@ -240,7 +222,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
                 GameActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         resetViews();
-                        generateQuestion(randInt(0,questionValues.size()));
+                        generateQuestion(UtilMethods.generateRandomInt(0, questionValues.size() - 1));
                     }
                 });
             }
