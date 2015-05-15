@@ -8,7 +8,6 @@
     tools:context="koundinya.com.wordquiz.view.activity.GameActivity">
 
 
-
     <RelativeLayout
         android:id="@+id/questionFrame"
         android:layout_width="fill_parent"
@@ -17,21 +16,25 @@
         android:layout_weight=".40">
 
         <ImageView
+            android:id="@+id/leader_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClick"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_leaderboard3x"/>
 
-        <TextView
-            android:id="@+id/score_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:text="0"
-            android:layout_centerHorizontal="true"/>
+        <!--<TextView-->
+            <!--android:id="@+id/score_card"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="25sp"-->
+            <!--android:text="0"-->
+            <!--android:layout_centerHorizontal="true"/>-->
+
+
         <TextView
             android:id="@+id/questionText"
             android:text="Question"

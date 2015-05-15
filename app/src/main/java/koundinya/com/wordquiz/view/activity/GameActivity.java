@@ -3,14 +3,18 @@ package koundinya.com.wordquiz.view.activity;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -23,11 +27,15 @@ import koundinya.com.wordquiz.R;
 import koundinya.com.wordquiz.Util.UtilMethods;
 import koundinya.com.wordquiz.model.CurrentUser;
 import koundinya.com.wordquiz.model.Question;
+import koundinya.com.wordquiz.model.User;
 import koundinya.com.wordquiz.parser.QuestionParser;
+import koundinya.com.wordquiz.parser.ScoreParser;
+import koundinya.com.wordquiz.view.adapters.ScoreListAdapter;
 
 public class GameActivity extends Activity implements View.OnClickListener{
 
     Firebase myFirebaseRef;
+    Firebase scoreRef;
     ArrayList<Question> questionValues;
     TextView questionText;
 
@@ -45,16 +53,24 @@ public class GameActivity extends Activity implements View.OnClickListener{
     RelativeLayout result_view;
     TextView result_text;
     Question currentQ;
+    DrawerLayout mDrawerLayout;
 
     LinearLayout question_layer;
     RelativeLayout options_view;
     int currentQuestion;
     int []colorArray;
 
+
+    private TextView user_name;
+    private ListView list_scores;
+    private ScoreListAdapter listAdapter;
+    private ArrayList<User> scoreArray;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.parent_game_layout);
 
         Firebase.setAndroidContext(this);
 
@@ -65,6 +81,10 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
 
     public void initViews(){
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         question_layer = (LinearLayout) findViewById(R.id.game_layer);
         questionText = (TextView) findViewById(R.id.questionText);
         option_1_text = (TextView) findViewById(R.id.option_1_text);
@@ -89,7 +109,32 @@ public class GameActivity extends Activity implements View.OnClickListener{
                 getResources().getColor(R.color.srihari_red),
                 getResources().getColor(R.color.srihari_orange)};
 
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
+        handleDrawerViews();
+
+    }
+
+
+
+    public void handleDrawerViews() {
+
+        user_name = (TextView) findViewById(R.id.user_name);
+
+        user_name.setText(CurrentUser.getInstance(this).getName());
+
+        list_scores = (ListView) findViewById(R.id.score_list);
+
+        scoreArray = new ArrayList<User>();
+
+        listAdapter = new ScoreListAdapter(this,R.layout.score_list_item,scoreArray);
+
+        list_scores.setAdapter(listAdapter);
+
+
+    }
+    public void openDrawer(){
+        mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
     public void setupFireBase() {
@@ -113,6 +158,29 @@ public class GameActivity extends Activity implements View.OnClickListener{
             }
         });
 
+        scoreRef = new Firebase("https://wordapp1.firebaseio.com/scores");
+
+
+        Query queryRef = scoreRef.orderByValue().limitToLast(10);
+
+        queryRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                scoreArray.clear();
+                scoreArray.addAll(ScoreParser.parseResponseValues(dataSnapshot));
+
+
+                listAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
 
     }
 
@@ -171,63 +239,70 @@ public class GameActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        boolean correctAnswer = false;
-        option_1.setVisibility(View.GONE);
-        option_2.setVisibility(View.GONE);
-        option_3.setVisibility(View.GONE);
-        option_4.setVisibility(View.GONE);
 
-        result_view.setVisibility(View.VISIBLE);
+      switch (v.getId()) {
+          case R.id.leader_board:
+              openDrawer();
+              break;
+          default:
+              boolean correctAnswer = false;
+              option_1.setVisibility(View.GONE);
+              option_2.setVisibility(View.GONE);
+              option_3.setVisibility(View.GONE);
+              option_4.setVisibility(View.GONE);
 
-        TextView selected_resp = null;
+              result_view.setVisibility(View.VISIBLE);
 
-        switch((int)v.getTag()){
-            case 1:
-                selected_resp = (TextView)v.findViewById(R.id.option_1_text);
-                break;
-            case 2:
-                selected_resp = (TextView)v.findViewById(R.id.option_2_text);
-                break;
-            case 3:
-                selected_resp = (TextView)v.findViewById(R.id.option_3_text);
-                break;
-            case 4:
-                selected_resp = (TextView)v.findViewById(R.id.option_4_text);
-                break;
+              TextView selected_resp = null;
 
-        }
+              switch ((int) v.getTag()) {
+                  case 1:
+                      selected_resp = (TextView) v.findViewById(R.id.option_1_text);
+                      break;
+                  case 2:
+                      selected_resp = (TextView) v.findViewById(R.id.option_2_text);
+                      break;
+                  case 3:
+                      selected_resp = (TextView) v.findViewById(R.id.option_3_text);
+                      break;
+                  case 4:
+                      selected_resp = (TextView) v.findViewById(R.id.option_4_text);
+                      break;
 
-        correctAnswer = selected_resp.getText().equals(currentQ.answer) ? true : false;
+              }
 
-        TextView status;
-        status = (TextView) result_view.findViewById(R.id.answer_status);
+              correctAnswer = selected_resp.getText().equals(currentQ.answer) ? true : false;
 
-        if(correctAnswer) {
+              TextView status;
+              status = (TextView) result_view.findViewById(R.id.answer_status);
 
-            CurrentUser.getInstance(this).correctAnswer(true);
-            status.setText("Correct.");
-        }else {
+              if (correctAnswer) {
 
-            CurrentUser.getInstance(this).correctAnswer(false);
-            status.setText("Wrong.");
-        }
+                  CurrentUser.getInstance(this).correctAnswer(true);
+                  status.setText("Correct.");
+              } else {
 
-        ColorDrawable viewColor = (ColorDrawable) v.getBackground();
+                  CurrentUser.getInstance(this).correctAnswer(false);
+                  status.setText("Wrong.");
+              }
 
-        result_view.setBackgroundColor(viewColor.getColor());
+              ColorDrawable viewColor = (ColorDrawable) v.getBackground();
+
+              result_view.setBackgroundColor(viewColor.getColor());
 
 
-        new Timer().schedule(new TimerTask(){
-            public void run() {
-                GameActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        resetViews();
-                        generateQuestion(UtilMethods.generateRandomInt(0, questionValues.size() - 1));
-                    }
-                });
-            }
-        }, 500);
-
+              new Timer().schedule(new TimerTask() {
+                  public void run() {
+                      GameActivity.this.runOnUiThread(new Runnable() {
+                          public void run() {
+                              resetViews();
+                              generateQuestion(UtilMethods.generateRandomInt(0, questionValues.size() - 1));
+                          }
+                      });
+                  }
+              }, 500);
+            break;
+      }
 
     }
 
@@ -244,4 +319,6 @@ public class GameActivity extends Activity implements View.OnClickListener{
         option_4.setVisibility(View.VISIBLE);
 
     }
+
 }
+

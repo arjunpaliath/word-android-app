@@ -17,20 +17,32 @@ public class LaunchActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
+        final Class launchClass;
+        final int delay;
 
-        final Class launchClass =
-                CurrentUser.getInstance(this).newUser() ? IndexActivity.class : GameActivity.class;
+        if(CurrentUser.getInstance(this).newUser()){
+
+            launchClass = IndexActivity.class;
+            delay = 2000;
+
+        }else{
+
+            launchClass = GameActivity.class;
+            delay = 300;
+        }
 
 
         new Timer().schedule(new TimerTask(){
             public void run() {
                 LaunchActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        startActivity(new Intent(LaunchActivity.this, launchClass));
+                        Intent startIntent = new Intent(LaunchActivity.this, launchClass);
+                        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(startIntent);
                     }
                 });
             }
-        }, 2000);
+        }, delay);
 
 
     }

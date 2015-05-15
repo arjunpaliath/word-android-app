@@ -65,7 +65,7 @@ public class UtilMethods {
         prime = primeCombo+1;
 
          int a = rand%adjectives.size();
-         int n = rand/adjectives.size();
+         int n = rand%nouns.size();
 
         String adjective = adjectives.get(a);
         adjective =  adjective.substring(0,1).toUpperCase() + adjective.substring(1).toLowerCase();
