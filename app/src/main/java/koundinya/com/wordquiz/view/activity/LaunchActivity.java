@@ -31,7 +31,6 @@ public class LaunchActivity extends Activity {
             delay = 300;
         }
 
-
         new Timer().schedule(new TimerTask(){
             public void run() {
                 LaunchActivity.this.runOnUiThread(new Runnable() {
@@ -43,11 +42,5 @@ public class LaunchActivity extends Activity {
                 });
             }
         }, delay);
-
-
     }
-
-
-
-
 }

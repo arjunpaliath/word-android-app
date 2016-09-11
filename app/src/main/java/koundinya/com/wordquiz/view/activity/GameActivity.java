@@ -138,7 +138,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
         user_name = (TextView) findViewById(R.id.user_name);
 
-        user_name.setText(CurrentUser.getInstance(this).getName());
+        user_name.setText("Hello! " + CurrentUser.getInstance(this).getName());
 
         list_scores = (ListView) findViewById(R.id.score_list);
 
@@ -148,8 +148,8 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
         list_scores.setAdapter(listAdapter);
 
-
     }
+
     public void openDrawer(){
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
@@ -338,7 +338,6 @@ public class GameActivity extends Activity implements View.OnClickListener{
     public void resetViews() {
 
         result_view.setVisibility(View.GONE);
-
         option_1.setVisibility(View.VISIBLE);
         option_2.setVisibility(View.VISIBLE);
         option_3.setVisibility(View.VISIBLE);
