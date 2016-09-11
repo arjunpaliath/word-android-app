@@ -30,5 +30,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.firebase:firebase-client-android:2.2.4+'
     compile 'com.github.adrian110288:LoadIndicators:83ce610325'
+    compile 'com.github.freshdesk:hotline-android:1.0.+'
+
 
 }

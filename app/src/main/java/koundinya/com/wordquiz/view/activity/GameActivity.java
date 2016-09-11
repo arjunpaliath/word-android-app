@@ -16,6 +16,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.freshdesk.hotline.FaqOptions;
+import com.freshdesk.hotline.Hotline;
+import com.freshdesk.hotline.HotlineConfig;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -77,6 +80,20 @@ public class GameActivity extends Activity implements View.OnClickListener{
         initViews();
 
         setupFireBase();
+
+        setupHotline();
+    }
+
+    public void setupHotline(){
+
+        HotlineConfig hlConfig=new HotlineConfig("09a378d4-6905-4741-84b4-aa2fbf08673e","a4e6192f-c2a4-45c4-bc2d-d8e47f1991a4");
+        hlConfig.setVoiceMessagingEnabled(true);
+        hlConfig.setCameraCaptureEnabled(true);
+        hlConfig.setPictureMessagingEnabled(true);
+
+        Hotline.getInstance(getApplicationContext()).init(hlConfig);
+
+
     }
 
 
@@ -243,6 +260,15 @@ public class GameActivity extends Activity implements View.OnClickListener{
       switch (v.getId()) {
           case R.id.leader_board:
               openDrawer();
+              break;
+          case R.id.ask_hotline:
+              FaqOptions faqOptions = new FaqOptions()
+                      .showFaqCategoriesAsGrid(true)
+                      .showContactUsOnAppBar(true)
+                      .showContactUsOnFaqScreens(false)
+                      .showContactUsOnFaqNotHelpful(false);
+
+              Hotline.showFAQs(GameActivity.this, faqOptions);
               break;
           default:
               boolean correctAnswer = false;

@@ -23,6 +23,23 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_leaderboard3x"/>
 
+        <RelativeLayout
+            android:id="@+id/ask_hotline"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="onClick"
+            android:layout_alignParentLeft="true">
+
+        <ImageView
+            android:id="@+id/hotline_button"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_headset_mic_white"/>
+
+        </RelativeLayout>
+
         <!--<TextView-->
             <!--android:id="@+id/score_card"-->
             <!--android:layout_width="wrap_content"-->

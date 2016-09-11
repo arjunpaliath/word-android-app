@@ -16,7 +16,6 @@ public class CurrentUser {
     static SharedPreferences prefs = null;
     private static Context mContext;
     private static CurrentUser instance = new CurrentUser();
-
     private CurrentUser(){}
 
     public static CurrentUser getInstance(Context context){

@@ -23,7 +23,7 @@ public class LaunchActivity extends Activity {
         if(CurrentUser.getInstance(this).newUser()){
 
             launchClass = IndexActivity.class;
-            delay = 2000;
+            delay = 300;
 
         }else{
 
