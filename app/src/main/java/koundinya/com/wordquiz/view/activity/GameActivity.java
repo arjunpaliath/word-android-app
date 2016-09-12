@@ -86,7 +86,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
 
     public void setupHotline(){
 
-        HotlineConfig hlConfig=new HotlineConfig("09a378d4-6905-4741-84b4-aa2fbf08673e","a4e6192f-c2a4-45c4-bc2d-d8e47f1991a4");
+        HotlineConfig hlConfig=new HotlineConfig("","");
         hlConfig.setVoiceMessagingEnabled(true);
         hlConfig.setCameraCaptureEnabled(true);
         hlConfig.setPictureMessagingEnabled(true);
